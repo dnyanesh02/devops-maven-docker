@@ -32,7 +32,7 @@ pipeline {
               }
             }  
         }
-
+/*
         stage ('Source Composition Analysis') {   
           // this stage will take around 20 min on the first run
           // dependency checker for finding vulnerbailities in project dependencies
@@ -47,7 +47,7 @@ pipeline {
             }
           }
         }
-
+*/
         stage('Build') {
             steps {
                 // Build your project (e.g., Maven)
