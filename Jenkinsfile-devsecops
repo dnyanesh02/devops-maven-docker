@@ -18,7 +18,7 @@ pipeline {
             steps {
               // make sure to create webhook from sonarqube to jenkins
               // add insallation name 
-              withSonarQubeEnv(credentialsId: 'sonacred',installationName: 'sonar') {
+              withSonarQubeEnv(credentialsId: 'sonarcred',installationName: 'sonar') {
               sh 'mvn clean package sonar:sonar -Dsonar.projectKey=test'
               }
             }
