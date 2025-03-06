@@ -63,3 +63,117 @@ IP:8081/devops
 
 
 Lab completed**
+
+
+
+
+===============================================================================
+
+NexusRepo Added with pipeline to centralize artifacts :  (Atleast 4 vcpus recommended on host )
+
+
+-- Go to the Nexus Repository downloads page and copy the link for the latest version. Then, use get to download it.
+
+cd /opt
+wget https://download.sonatype.com/nexus/3/nexus-unix-x86-64-3.78.0-14.tar.gz                               ## https://help.sonatype.com/en/download.html
+
+
+-- Once the download is complete, extract the tarball:
+
+sudo tar -xvzf latest-unix.tar.gz
+
+
+
+-- Move Nexus to a Permanent Location :
+
+sudo mkdir -p /opt/nexus
+sudo mv nexus-3.x.y.z /opt/nexus/
+sudo mv sonatype-work /opt/nexus/
+
+
+
+-- To run nexus as service using Systemd :
+
+vi /etc/systemd/system/nexus.service
+
+[Unit]
+Description=nexus service
+After=network.target
+
+[Service]
+Type=forking
+LimitNOFILE=65536
+ExecStart=/opt/nexus/nexus-3.78.0-14/bin/nexus start
+ExecStop=/opt/nexus/nexus-3.78.0-14/bin/nexus stop
+User=root
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+-- To start nexus service using systemctl
+
+sudo systemctl start nexus
+sudo systemctl enable nexus
+sudo systemctl status nexus
+
+
+-- if it doesnt reposnd stop and start it again :
+
+systemctl stop nexus
+systemctl start nexus
+
+
+-- To login to Nexus, click on Sign In, default username is admin
+
+-- To find default password run the below command :
+
+cat /opt/nexus/sonatype-work/nexus3/admin.password
+
+
+
+
+-- Configure Nexus for Jenkins
+Create a Repository:
+
+Log in to Nexus and create a new repository:
+
+Go to Repositories > Create Repository.
+
+Choose Maven 2 (hosted) for storing build artifacts.
+
+Configure the repository (e.g., name: maven-releases, version policy: Release).
+
+
+
+-- Create a User for Jenkins on nexus repo website itself :
+
+Go to Security > Users > Create User.
+
+Create a user with permissions to deploy artifacts (e.g., assign the nx-deploy or nx-admin role).
+
+-- Add Nexus Credentials to Jenkins:
+
+In Jenkins, go to Manage Jenkins > Credentials > System > Global Credentials.
+
+Add the Nexus user credentials (username and password).
+
+
+
+
+-- Test the Setup
+Deploy an Artifact from Jenkins:
+
+Use the Jenkins pipeline script provided earlier to deploy an artifact to Nexus.
+
+Verify that the artifact appears in the Nexus repository.
+
+Retrieve an Artifact from Nexus:
+
+Use curl or Maven to download the artifact from Nexus.
+
+
+-----------------------------------------------------------
+
