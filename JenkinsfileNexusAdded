@@ -28,6 +28,7 @@ pipeline {
             steps {
                 // Deploy the artifact to Nexus
                 nexusArtifactUploader artifacts: [[artifactId: 'devops', classifier: '', file: 'target/devops.war', type: '.war']], credentialsId: 'nexus-credentials', groupId: 'com.techlanders', nexusUrl: '54.233.230.79:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'myrepo', version: '${ARTIFACT_VERSION}'
+           }
         }
 
         stage('Docker Build') {
