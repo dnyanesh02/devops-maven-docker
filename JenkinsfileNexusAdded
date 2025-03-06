@@ -34,7 +34,7 @@ pipeline {
                     sh """
                         curl -u ${NEXUS_CREDENTIALS_USR}:${NEXUS_CREDENTIALS_PSW} \
                         --upload-file ${artifactPath} \
-                        ${NEXUS_URL}com/example/devops/${ARTIFACT_VERSION}/devops.war
+                        ${NEXUS_URL}com/techlanders/devops/${ARTIFACT_VERSION}/devops.war
                     """
                     echo "Artifact published to Nexus: ${artifactPath}"
                 }
