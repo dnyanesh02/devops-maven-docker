@@ -163,16 +163,11 @@ Add the Nexus user credentials (username and password).
 
 
 
--- Test the Setup
-Deploy an Artifact from Jenkins:
+-- install Nexus Artifact Uploader plugin on jenkins 
 
-Use the Jenkins pipeline script provided earlier to deploy an artifact to Nexus.
+add the stage steps in the jenkinsfile as per the details filled in uploADER plugin 
 
-Verify that the artifact appears in the Nexus repository.
-
-Retrieve an Artifact from Nexus:
-
-Use curl or Maven to download the artifact from Nexus.
+Build the pipeline and watch artefact storage in nexus 
 
 
 -----------------------------------------------------------
