@@ -4,6 +4,8 @@ pipeline {
         maven 'mvn'  // Maven tool configured in Jenkins
     }
     environment {
+        NEXUS_URL = 'http://54.233.230.79:8081/repository/myrepo/'  // Replace with your Nexus repository URL
+        NEXUS_CREDENTIALS = credentials('nexus-credentials')  // Credentials ID for Nexus (configured in Jenkins)
         ARTIFACT_VERSION = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
     }
     stages {
@@ -24,6 +26,21 @@ pipeline {
             }
         }
 
+        stage('Publish to Nexus') {
+            steps {
+                // Deploy the artifact to Nexus
+                script {
+                    def artifactPath = "target/devops.war"  // Adjust the path to your artifact
+                    sh """
+                        curl -u ${NEXUS_CREDENTIALS_USR}:${NEXUS_CREDENTIALS_PSW} \
+                        --upload-file ${artifactPath} \
+                        ${NEXUS_URL}com/example/devops/${ARTIFACT_VERSION}/devops.war
+                    """
+                    echo "Artifact published to Nexus: ${artifactPath}"
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 // Build a Docker image
@@ -34,7 +51,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Deploy the Docker image
-                sh 'docker run -d -p 8081:8080 --name mynewcontainer image-name:${ARTIFACT_VERSION}'
+                sh 'docker run -d -p 8082:8080 --name mynewcontainer image-name:${ARTIFACT_VERSION}'
             }
         }
     }
