@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Deploy the Docker image
-                sh 'docker run -d -p 8081:8080 --name mynewcontainer image-name:${ARTIFACT_VERSION}'
+                sh 'docker run -d -p 8082:8080 --name mynewcontainer image-name:${ARTIFACT_VERSION}'
             }
         }
     }
